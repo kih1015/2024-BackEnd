@@ -3,7 +3,10 @@ package com.example.demo.controller;
 import java.util.List;
 
 import com.example.demo.exception.RestApiException;
+import com.example.demo.exception.error.BoardErrorCode;
 import com.example.demo.exception.error.CommonErrorCode;
+import com.example.demo.exception.error.MemberErrorCode;
+import com.example.demo.service.ArticleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +25,11 @@ import com.example.demo.service.BoardService;
 public class BoardController {
 
     private final BoardService boardService;
+    private final ArticleService articleService;
 
-    public BoardController(BoardService boardService) {
+    public BoardController(BoardService boardService, ArticleService articleService) {
         this.boardService = boardService;
+        this.articleService = articleService;
     }
 
     @GetMapping("/boards")
@@ -64,6 +69,11 @@ public class BoardController {
     public ResponseEntity<Void> deleteBoard(
         @PathVariable Long id
     ) {
+        if (articleService.getArticles()
+                .stream()
+                .anyMatch(res -> res.boardId().equals(id))) {
+            throw new RestApiException(BoardErrorCode.ARTICLE_EXISTENCE);
+        }
         boardService.deleteBoard(id);
         return ResponseEntity.noContent().build();
     }
