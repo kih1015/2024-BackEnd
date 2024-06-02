@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.demo.exception.RestApiException;
 import com.example.demo.exception.error.CommonErrorCode;
+import com.example.demo.exception.error.MemberErrorCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +36,7 @@ public class MemberController {
 
     @GetMapping("/members/{id}")
     public ResponseEntity<MemberResponse> getMember(
-        @PathVariable Long id
+            @PathVariable Long id
     ) {
         if (memberService.getAll().stream().noneMatch(res -> res.id().equals(id))) {
             throw new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND);
@@ -46,7 +47,7 @@ public class MemberController {
 
     @PostMapping("/members")
     public ResponseEntity<MemberResponse> create(
-        @RequestBody MemberCreateRequest request
+            @RequestBody MemberCreateRequest request
     ) {
         MemberResponse response = memberService.create(request);
         return ResponseEntity.ok(response);
@@ -54,16 +55,22 @@ public class MemberController {
 
     @PutMapping("/members/{id}")
     public ResponseEntity<MemberResponse> updateMember(
-        @PathVariable Long id,
-        @RequestBody MemberUpdateRequest request
+            @PathVariable Long id,
+            @RequestBody MemberUpdateRequest request
     ) {
+        if (memberService.getAll()
+                .stream()
+                .filter(res -> !res.id().equals(id))
+                .anyMatch(res -> res.email().equals(request.email()))) {
+            throw new RestApiException(MemberErrorCode.EMAIL_CONFLICT);
+        }
         MemberResponse response = memberService.update(id, request);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/members/{id}")
     public ResponseEntity<Void> deleteMember(
-        @PathVariable Long id
+            @PathVariable Long id
     ) {
         memberService.delete(id);
         return ResponseEntity.noContent().build();
