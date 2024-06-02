@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import com.example.demo.controller.dto.response.BoardResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,12 @@ public class ArticleService {
         this.articleRepository = articleRepository;
         this.memberRepository = memberRepository;
         this.boardRepository = boardRepository;
+    }
+
+    public List<ArticleResponse> getArticles() {
+        return articleRepository.findAll().stream()
+                .map(ArticleResponse::from)
+                .toList();
     }
 
     public ArticleResponse getById(Long id) {
