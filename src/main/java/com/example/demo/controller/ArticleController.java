@@ -69,6 +69,14 @@ public class ArticleController {
         if (isNullExistence) {
             throw new RestApiException(CommonErrorCode.NULL_PARAMETER);
         }
+        if (boardService.getBoards()
+                .stream()
+                .noneMatch(res -> res.id().equals(request.boardId()))
+        || memberService.getAll()
+                .stream()
+                .noneMatch(res -> res.id().equals(request.authorId()))) {
+            throw new RestApiException(ArticleErrorCode.REFERENCE_ERROR);
+        }
         ArticleResponse response = articleService.create(request);
         return ResponseEntity.created(URI.create("/articles/" + response.id())).body(response);
     }
