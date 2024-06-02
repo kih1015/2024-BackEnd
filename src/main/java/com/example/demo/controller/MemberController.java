@@ -49,6 +49,12 @@ public class MemberController {
     public ResponseEntity<MemberResponse> create(
             @RequestBody MemberCreateRequest request
     ) {
+        boolean isNullExistence = request.name() == null
+                || request.email() == null
+                || request.password() == null;
+        if (isNullExistence) {
+            throw new RestApiException(CommonErrorCode.NULL_PARAMETER);
+        }
         MemberResponse response = memberService.create(request);
         return ResponseEntity.ok(response);
     }

@@ -62,6 +62,13 @@ public class ArticleController {
     public ResponseEntity<ArticleResponse> crateArticle(
             @RequestBody ArticleCreateRequest request
     ) {
+        boolean isNullExistence = request.boardId() == null
+                || request.authorId() == null
+                || request.title() == null
+                || request.description() == null;
+        if (isNullExistence) {
+            throw new RestApiException(CommonErrorCode.NULL_PARAMETER);
+        }
         ArticleResponse response = articleService.create(request);
         return ResponseEntity.created(URI.create("/articles/" + response.id())).body(response);
     }

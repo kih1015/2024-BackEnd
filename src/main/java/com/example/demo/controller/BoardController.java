@@ -46,6 +46,9 @@ public class BoardController {
     public BoardResponse createBoard(
         @RequestBody BoardCreateRequest request
     ) {
+        if (request.name() == null) {
+            throw new RestApiException(CommonErrorCode.NULL_PARAMETER);
+        }
         return boardService.createBoard(request);
     }
 
