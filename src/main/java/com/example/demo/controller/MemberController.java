@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.demo.exception.RestApiException;
 import com.example.demo.exception.error.CommonErrorCode;
 import com.example.demo.exception.error.MemberErrorCode;
+import com.example.demo.service.ArticleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,9 +24,11 @@ import com.example.demo.service.MemberService;
 public class MemberController {
 
     private final MemberService memberService;
+    private final ArticleService articleService;
 
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService, ArticleService articleService) {
         this.memberService = memberService;
+        this.articleService = articleService;
     }
 
     @GetMapping("/members")
@@ -78,6 +81,11 @@ public class MemberController {
     public ResponseEntity<Void> deleteMember(
             @PathVariable Long id
     ) {
+        if (articleService.getArticles()
+                .stream()
+                .anyMatch(res -> res.authorId().equals(id))) {
+            throw new RestApiException(MemberErrorCode.ARTICLE_EXISTENCE);
+        }
         memberService.delete(id);
         return ResponseEntity.noContent().build();
     }
