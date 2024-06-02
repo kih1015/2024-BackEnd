@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import com.example.demo.exception.RestApiException;
+import com.example.demo.exception.error.CommonErrorCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +36,9 @@ public class BoardController {
     public BoardResponse getBoard(
         @PathVariable Long id
     ) {
+        if (boardService.getBoards().stream().noneMatch(res -> res.id().equals(id))) {
+            throw new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND);
+        }
         return boardService.getBoardById(id);
     }
 

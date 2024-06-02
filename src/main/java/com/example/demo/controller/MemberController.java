@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import com.example.demo.exception.RestApiException;
+import com.example.demo.exception.error.CommonErrorCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +37,9 @@ public class MemberController {
     public ResponseEntity<MemberResponse> getMember(
         @PathVariable Long id
     ) {
+        if (memberService.getAll().stream().noneMatch(res -> res.id().equals(id))) {
+            throw new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND);
+        }
         MemberResponse response = memberService.getById(id);
         return ResponseEntity.ok(response);
     }

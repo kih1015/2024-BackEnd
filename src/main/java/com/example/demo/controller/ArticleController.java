@@ -3,6 +3,9 @@ package com.example.demo.controller;
 import java.net.URI;
 import java.util.List;
 
+import com.example.demo.exception.RestApiException;
+import com.example.demo.exception.error.CommonErrorCode;
+import com.example.demo.service.BoardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +42,9 @@ public class ArticleController {
     public ResponseEntity<ArticleResponse> getArticle(
         @PathVariable Long id
     ) {
+        if (articleService.getArticles().stream().noneMatch(res -> res.id().equals(id))) {
+            throw new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND);
+        }
         ArticleResponse response = articleService.getById(id);
         return ResponseEntity.ok(response);
     }

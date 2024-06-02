@@ -2,6 +2,7 @@ package com.example.demo.exception;
 
 import com.example.demo.exception.error.CommonErrorCode;
 import com.example.demo.exception.error.ErrorCode;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,12 +15,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RestApiException.class)
     public ResponseEntity<ErrorResponse> handleCustomException(RestApiException e) {
         ErrorCode errorCode = e.getErrorCode();
-        return handleExceptionInternal(errorCode);
-    }
-
-    @ExceptionHandler(EmptyResultDataAccessException.class)
-    public ResponseEntity<ErrorResponse> handleEmptyResultException(EmptyResultDataAccessException e){
-        ErrorCode errorCode = CommonErrorCode.RESOURCE_NOT_FOUND;
         return handleExceptionInternal(errorCode);
     }
 
