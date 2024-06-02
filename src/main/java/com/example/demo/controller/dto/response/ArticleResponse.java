@@ -35,4 +35,16 @@ public record ArticleResponse(
             article.getModifiedAt()
         );
     }
+
+    public static ArticleResponse from(Article article) {
+        return new ArticleResponse(
+                article.getId(),
+                article.getAuthorId(),
+                article.getBoardId(),
+                article.getTitle(),
+                article.getContent(),
+                article.getCreatedAt(),
+                article.getModifiedAt()
+        );
+    }
 }
