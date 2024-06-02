@@ -1,16 +1,16 @@
-package com.example.demo.exception;
+package com.example.demo.exception.error;
 
 import org.springframework.http.HttpStatus;
 
-public enum MemberErrorCode implements ErrorCode{
+public enum CommonErrorCode implements ErrorCode{
 
-    EMAIL_CONFLICT(HttpStatus.CONFLICT, "중복된 이메일입니다."),
-    ARTICLE_EXISTENCE(HttpStatus.BAD_REQUEST, "작성한 게시물이 존재합니다.");
+    RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "자원이 존재하지 않습니다."),
+    NULL_PARAMETER(HttpStatus.BAD_REQUEST, "NULL 파라미터가 존재합니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
 
-    MemberErrorCode(HttpStatus httpStatus, String message) {
+    CommonErrorCode(HttpStatus httpStatus, String message) {
         this.httpStatus = httpStatus;
         this.message = message;
     }
