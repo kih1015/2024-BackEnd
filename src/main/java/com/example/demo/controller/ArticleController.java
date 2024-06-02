@@ -4,8 +4,11 @@ import java.net.URI;
 import java.util.List;
 
 import com.example.demo.exception.RestApiException;
+import com.example.demo.exception.error.ArticleErrorCode;
 import com.example.demo.exception.error.CommonErrorCode;
 import com.example.demo.service.BoardService;
+import com.example.demo.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,14 +28,18 @@ import com.example.demo.service.ArticleService;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final MemberService memberService;
+    private final BoardService boardService;
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, MemberService memberService, BoardService boardService) {
         this.articleService = articleService;
+        this.memberService = memberService;
+        this.boardService = boardService;
     }
 
     @GetMapping("/articles")
     public ResponseEntity<List<ArticleResponse>> getArticles(
-        @RequestParam Long boardId
+            @RequestParam Long boardId
     ) {
         List<ArticleResponse> response = articleService.getByBoardId(boardId);
         return ResponseEntity.ok(response);
@@ -40,9 +47,11 @@ public class ArticleController {
 
     @GetMapping("/articles/{id}")
     public ResponseEntity<ArticleResponse> getArticle(
-        @PathVariable Long id
+            @PathVariable Long id
     ) {
-        if (articleService.getArticles().stream().noneMatch(res -> res.id().equals(id))) {
+        if (articleService.getArticles()
+                .stream()
+                .noneMatch(res -> res.id().equals(id))) {
             throw new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND);
         }
         ArticleResponse response = articleService.getById(id);
@@ -51,7 +60,7 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public ResponseEntity<ArticleResponse> crateArticle(
-        @RequestBody ArticleCreateRequest request
+            @RequestBody ArticleCreateRequest request
     ) {
         ArticleResponse response = articleService.create(request);
         return ResponseEntity.created(URI.create("/articles/" + response.id())).body(response);
@@ -59,16 +68,21 @@ public class ArticleController {
 
     @PutMapping("/articles/{id}")
     public ResponseEntity<ArticleResponse> updateArticle(
-        @PathVariable Long id,
-        @RequestBody ArticleUpdateRequest request
+            @PathVariable Long id,
+            @RequestBody ArticleUpdateRequest request
     ) {
+        if (boardService.getBoards()
+                .stream()
+                .noneMatch(res -> res.id().equals(request.boardId()))) {
+            throw new RestApiException(ArticleErrorCode.REFERENCE_ERROR);
+        }
         ArticleResponse response = articleService.update(id, request);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/articles/{id}")
     public ResponseEntity<Void> updateArticle(
-        @PathVariable Long id
+            @PathVariable Long id
     ) {
         articleService.delete(id);
         return ResponseEntity.noContent().build();
