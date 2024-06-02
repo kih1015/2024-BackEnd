@@ -1,15 +1,14 @@
 package com.example.demo.service;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.example.demo.controller.dto.request.BoardCreateRequest;
 import com.example.demo.controller.dto.request.BoardUpdateRequest;
 import com.example.demo.controller.dto.response.BoardResponse;
 import com.example.demo.domain.Board;
 import com.example.demo.repository.BoardRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)

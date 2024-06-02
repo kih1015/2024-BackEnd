@@ -1,24 +1,17 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
+import com.example.demo.controller.dto.request.MemberCreateRequest;
+import com.example.demo.controller.dto.request.MemberUpdateRequest;
+import com.example.demo.controller.dto.response.MemberResponse;
 import com.example.demo.exception.RestApiException;
 import com.example.demo.exception.error.CommonErrorCode;
 import com.example.demo.exception.error.MemberErrorCode;
 import com.example.demo.service.ArticleService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.example.demo.controller.dto.request.MemberCreateRequest;
-import com.example.demo.controller.dto.request.MemberUpdateRequest;
-import com.example.demo.controller.dto.response.MemberResponse;
 import com.example.demo.service.MemberService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class MemberController {

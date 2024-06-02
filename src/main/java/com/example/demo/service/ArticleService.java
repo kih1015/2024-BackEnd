@@ -1,20 +1,18 @@
 package com.example.demo.service;
 
-import java.util.List;
-
-import com.example.demo.controller.dto.response.BoardResponse;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.example.demo.controller.dto.request.ArticleCreateRequest;
-import com.example.demo.controller.dto.response.ArticleResponse;
 import com.example.demo.controller.dto.request.ArticleUpdateRequest;
+import com.example.demo.controller.dto.response.ArticleResponse;
 import com.example.demo.domain.Article;
 import com.example.demo.domain.Board;
 import com.example.demo.domain.Member;
 import com.example.demo.repository.ArticleRepository;
 import com.example.demo.repository.BoardRepository;
 import com.example.demo.repository.MemberRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)

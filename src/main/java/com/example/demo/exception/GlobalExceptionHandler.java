@@ -1,9 +1,6 @@
 package com.example.demo.exception;
 
-import com.example.demo.exception.error.CommonErrorCode;
 import com.example.demo.exception.error.ErrorCode;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

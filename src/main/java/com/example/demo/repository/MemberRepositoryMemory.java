@@ -1,11 +1,11 @@
 package com.example.demo.repository;
 
+import com.example.demo.domain.Member;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
-
-import com.example.demo.domain.Member;
 
 public class MemberRepositoryMemory implements MemberRepository {
 
