@@ -29,20 +29,14 @@ public class ArticleController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<ArticleResponse>> getArticles(
-            @RequestParam Long boardId
-    ) {
+    public ResponseEntity<List<ArticleResponse>> getArticles(@RequestParam Long boardId) {
         List<ArticleResponse> response = articleService.getByBoardId(boardId);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ArticleResponse> getArticle(
-            @PathVariable Long id
-    ) {
-        if (articleService.getArticles()
-                .stream()
-                .noneMatch(res -> res.id().equals(id))) {
+    public ResponseEntity<ArticleResponse> getArticle(@PathVariable Long id) {
+        if (articleService.getArticles().stream().noneMatch(res -> res.id().equals(id))) {
             throw new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND);
         }
         ArticleResponse response = articleService.getById(id);
@@ -50,22 +44,11 @@ public class ArticleController {
     }
 
     @PostMapping()
-    public ResponseEntity<ArticleResponse> crateArticle(
-            @RequestBody ArticleCreateRequest request
-    ) {
-        boolean isNullExistence = request.boardId() == null
-                || request.authorId() == null
-                || request.title() == null
-                || request.description() == null;
-        if (isNullExistence) {
+    public ResponseEntity<ArticleResponse> crateArticle(@RequestBody ArticleCreateRequest request) {
+        if (request.boardId() == null || request.authorId() == null || request.title() == null || request.description() == null) {
             throw new RestApiException(CommonErrorCode.NULL_PARAMETER);
         }
-        if (boardService.getBoards()
-                .stream()
-                .noneMatch(res -> res.id().equals(request.boardId()))
-                || memberService.getAll()
-                .stream()
-                .noneMatch(res -> res.id().equals(request.authorId()))) {
+        if (boardService.getBoards().stream().noneMatch(res -> res.id().equals(request.boardId())) || memberService.getAll().stream().noneMatch(res -> res.id().equals(request.authorId()))) {
             throw new RestApiException(ArticleErrorCode.REFERENCE_ERROR);
         }
         ArticleResponse response = articleService.create(request);
@@ -73,13 +56,8 @@ public class ArticleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ArticleResponse> updateArticle(
-            @PathVariable Long id,
-            @RequestBody ArticleUpdateRequest request
-    ) {
-        if (boardService.getBoards()
-                .stream()
-                .noneMatch(res -> res.id().equals(request.boardId()))) {
+    public ResponseEntity<ArticleResponse> updateArticle(@PathVariable Long id, @RequestBody ArticleUpdateRequest request) {
+        if (boardService.getBoards().stream().noneMatch(res -> res.id().equals(request.boardId()))) {
             throw new RestApiException(ArticleErrorCode.REFERENCE_ERROR);
         }
         ArticleResponse response = articleService.update(id, request);
@@ -87,9 +65,7 @@ public class ArticleController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> updateArticle(
-            @PathVariable Long id
-    ) {
+    public ResponseEntity<Void> updateArticle(@PathVariable Long id) {
         articleService.delete(id);
         return ResponseEntity.noContent().build();
     }

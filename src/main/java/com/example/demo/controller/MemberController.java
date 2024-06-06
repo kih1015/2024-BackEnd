@@ -31,9 +31,7 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MemberResponse> getMember(
-            @PathVariable Long id
-    ) {
+    public ResponseEntity<MemberResponse> getMember(@PathVariable Long id) {
         if (memberService.getAll().stream().noneMatch(res -> res.id().equals(id))) {
             throw new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND);
         }
@@ -42,13 +40,8 @@ public class MemberController {
     }
 
     @PostMapping()
-    public ResponseEntity<MemberResponse> create(
-            @RequestBody MemberCreateRequest request
-    ) {
-        boolean isNullExistence = request.name() == null
-                || request.email() == null
-                || request.password() == null;
-        if (isNullExistence) {
+    public ResponseEntity<MemberResponse> create(@RequestBody MemberCreateRequest request) {
+        if (request.name() == null || request.email() == null || request.password() == null) {
             throw new RestApiException(CommonErrorCode.NULL_PARAMETER);
         }
         MemberResponse response = memberService.create(request);
@@ -56,14 +49,8 @@ public class MemberController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MemberResponse> updateMember(
-            @PathVariable Long id,
-            @RequestBody MemberUpdateRequest request
-    ) {
-        if (memberService.getAll()
-                .stream()
-                .filter(res -> !res.id().equals(id))
-                .anyMatch(res -> res.email().equals(request.email()))) {
+    public ResponseEntity<MemberResponse> updateMember(@PathVariable Long id, @RequestBody MemberUpdateRequest request) {
+        if (memberService.getAll().stream().filter(res -> !res.id().equals(id)).anyMatch(res -> res.email().equals(request.email()))) {
             throw new RestApiException(MemberErrorCode.EMAIL_CONFLICT);
         }
         MemberResponse response = memberService.update(id, request);
@@ -71,12 +58,8 @@ public class MemberController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMember(
-            @PathVariable Long id
-    ) {
-        if (articleService.getArticles()
-                .stream()
-                .anyMatch(res -> res.authorId().equals(id))) {
+    public ResponseEntity<Void> deleteMember(@PathVariable Long id) {
+        if (articleService.getArticles().stream().anyMatch(res -> res.authorId().equals(id))) {
             throw new RestApiException(MemberErrorCode.ARTICLE_EXISTENCE);
         }
         memberService.delete(id);
