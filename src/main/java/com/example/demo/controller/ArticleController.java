@@ -63,7 +63,7 @@ public class ArticleController {
         if (boardService.getBoards()
                 .stream()
                 .noneMatch(res -> res.id().equals(request.boardId()))
-        || memberService.getAll()
+                || memberService.getAll()
                 .stream()
                 .noneMatch(res -> res.id().equals(request.authorId()))) {
             throw new RestApiException(ArticleErrorCode.REFERENCE_ERROR);
