@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController("/members")
 public class MemberController {
 
     private final MemberService memberService;
@@ -24,13 +24,13 @@ public class MemberController {
         this.articleService = articleService;
     }
 
-    @GetMapping("/members")
+    @GetMapping()
     public ResponseEntity<List<MemberResponse>> getMembers() {
         List<MemberResponse> response = memberService.getAll();
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/members/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<MemberResponse> getMember(
             @PathVariable Long id
     ) {
@@ -41,7 +41,7 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/members")
+    @PostMapping()
     public ResponseEntity<MemberResponse> create(
             @RequestBody MemberCreateRequest request
     ) {
@@ -55,7 +55,7 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/members/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<MemberResponse> updateMember(
             @PathVariable Long id,
             @RequestBody MemberUpdateRequest request
@@ -70,7 +70,7 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/members/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMember(
             @PathVariable Long id
     ) {

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
-@RestController
+@RestController("/articles")
 public class ArticleController {
 
     private final ArticleService articleService;
@@ -28,7 +28,7 @@ public class ArticleController {
         this.boardService = boardService;
     }
 
-    @GetMapping("/articles")
+    @GetMapping()
     public ResponseEntity<List<ArticleResponse>> getArticles(
             @RequestParam Long boardId
     ) {
@@ -36,7 +36,7 @@ public class ArticleController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/articles/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ArticleResponse> getArticle(
             @PathVariable Long id
     ) {
@@ -49,7 +49,7 @@ public class ArticleController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/articles")
+    @PostMapping()
     public ResponseEntity<ArticleResponse> crateArticle(
             @RequestBody ArticleCreateRequest request
     ) {
@@ -72,7 +72,7 @@ public class ArticleController {
         return ResponseEntity.created(URI.create("/articles/" + response.id())).body(response);
     }
 
-    @PutMapping("/articles/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ArticleResponse> updateArticle(
             @PathVariable Long id,
             @RequestBody ArticleUpdateRequest request
@@ -86,7 +86,7 @@ public class ArticleController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/articles/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> updateArticle(
             @PathVariable Long id
     ) {

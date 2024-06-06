@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController("/boards")
 public class BoardController {
 
     private final BoardService boardService;
@@ -24,12 +24,12 @@ public class BoardController {
         this.articleService = articleService;
     }
 
-    @GetMapping("/boards")
+    @GetMapping()
     public List<BoardResponse> getBoards() {
         return boardService.getBoards();
     }
 
-    @GetMapping("/boards/{id}")
+    @GetMapping("/{id}")
     public BoardResponse getBoard(
         @PathVariable Long id
     ) {
@@ -39,7 +39,7 @@ public class BoardController {
         return boardService.getBoardById(id);
     }
 
-    @PostMapping("/boards")
+    @PostMapping()
     public BoardResponse createBoard(
         @RequestBody BoardCreateRequest request
     ) {
@@ -49,7 +49,7 @@ public class BoardController {
         return boardService.createBoard(request);
     }
 
-    @PutMapping("/boards/{id}")
+    @PutMapping("/{id}")
     public BoardResponse updateBoard(
         @PathVariable Long id,
         @RequestBody BoardUpdateRequest updateRequest
@@ -57,7 +57,7 @@ public class BoardController {
         return boardService.update(id, updateRequest);
     }
 
-    @DeleteMapping("/boards/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBoard(
         @PathVariable Long id
     ) {
