@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/members")
+@RestController
+@RequestMapping("/members")
 public class MemberController {
 
     private final MemberService memberService;
