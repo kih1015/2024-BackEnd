@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.util.List;
 
-@Repository
 public class MemberRepositoryJdbc implements MemberRepository {
 
     private final JdbcTemplate jdbcTemplate;
