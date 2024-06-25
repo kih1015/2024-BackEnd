@@ -45,7 +45,8 @@ public class BoardService {
 
     @Transactional
     public BoardResponse update(Long id, BoardUpdateRequest request) {
-        Board board = boardRepository.findById(id);
+        Board old = boardRepository.findById(id);
+        Board board = new Board(old.getId(), old.getName());
         board.update(request.name());
         Board updated = boardRepository.update(board);
         return BoardResponse.from(updated);

@@ -47,7 +47,8 @@ public class MemberService {
 
     @Transactional
     public MemberResponse update(Long id, MemberUpdateRequest request) {
-        Member member = memberRepository.findById(id);
+        Member old = memberRepository.findById(id);
+        Member member = new Member(old.getId(), old.getName(), old.getEmail(), old.getPassword());
         member.update(request.name(), request.email());
         memberRepository.update(member);
         return MemberResponse.from(member);

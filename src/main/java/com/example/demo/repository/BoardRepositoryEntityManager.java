@@ -36,9 +36,7 @@ public class BoardRepositoryEntityManager implements BoardRepository {
 
     @Override
     public Board update(Board board) {
-        Board forUpdate = findById(board.getId());
-        forUpdate.update(board.getName());
-        return findById(board.getId());
+        return entityManager.merge(board);
     }
 
 }

@@ -31,9 +31,7 @@ public class MemberRepositoryEntityManager implements MemberRepository {
 
     @Override
     public Member update(Member member) {
-        Member forUpdate = findById(member.getId());
-        forUpdate.update(member.getName(), member.getEmail());
-        return findById(member.getId());
+        return entityManager.merge(member);
     }
 
     @Override

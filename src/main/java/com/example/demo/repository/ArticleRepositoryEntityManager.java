@@ -48,9 +48,7 @@ public class ArticleRepositoryEntityManager implements ArticleRepository{
 
     @Override
     public Article update(Article article) {
-        Article forUpdate = findById(article.getId());
-        forUpdate.update(article.getBoardId(), article.getTitle(), article.getContent());
-        return findById(article.getId());
+        return entityManager.merge(article);
     }
 
     @Override
