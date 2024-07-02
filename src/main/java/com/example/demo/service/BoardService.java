@@ -34,7 +34,7 @@ public class BoardService {
     @Transactional
     public BoardResponse createBoard(BoardCreateRequest request) {
         Board board = new Board(request.name());
-        Board saved = boardRepository.insert(board);
+        Board saved = boardRepository.save(board);
         return BoardResponse.from(saved);
     }
 
@@ -45,10 +45,9 @@ public class BoardService {
 
     @Transactional
     public BoardResponse update(Long id, BoardUpdateRequest request) {
-        Board old = boardRepository.findById(id);
-        Board board = new Board(old.getId(), old.getName());
+        Board board = boardRepository.findById(id);
         board.update(request.name());
-        Board updated = boardRepository.update(board);
-        return BoardResponse.from(updated);
+        return BoardResponse.from(board);
     }
+
 }
