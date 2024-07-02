@@ -8,33 +8,28 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class BoardRepositoryEntityManager implements BoardRepository {
+public class BoardRepositoryEntityManager {
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Override
     public List<Board> findAll() {
         return entityManager.createQuery("SELECT b FROM Board b", Board.class).getResultList();
     }
 
-    @Override
     public Board findById(Long id) {
         return entityManager.find(Board.class, id);
     }
 
-    @Override
     public Board insert(Board board) {
         entityManager.persist(board);
         return findById(board.getId());
     }
 
-    @Override
     public void deleteById(Long id) {
         entityManager.remove(findById(id));
     }
 
-    @Override
     public Board update(Board board) {
         return entityManager.merge(board);
     }
