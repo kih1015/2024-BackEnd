@@ -26,16 +26,17 @@ public class Article {
     @Column(name = "modified_date")
     private LocalDateTime modifiedAt;
 
-    public Article() {}
+    public Article() {
+    }
 
     public Article(
-        Long id,
-        Member author,
-        Board board,
-        String title,
-        String content,
-        LocalDateTime createdAt,
-        LocalDateTime modifiedAt
+            Long id,
+            Member author,
+            Board board,
+            String title,
+            String content,
+            LocalDateTime createdAt,
+            LocalDateTime modifiedAt
     ) {
         this.id = id;
         this.author = author;
@@ -44,6 +45,9 @@ public class Article {
         this.content = content;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
+
+        author.getArticles().add(this);
+        board.getArticles().add(this);
     }
 
     public Article(Member author, Board board, String title, String content) {
@@ -54,13 +58,20 @@ public class Article {
         this.content = content;
         this.createdAt = LocalDateTime.now();
         this.modifiedAt = LocalDateTime.now();
+
+        author.getArticles().add(this);
+        board.getArticles().add(this);
     }
 
     public void update(Board board, String title, String description) {
+        this.board.getArticles().remove(this);
+
         this.board = board;
         this.title = title;
         this.content = description;
         this.modifiedAt = LocalDateTime.now();
+
+        board.getArticles().add(this);
     }
 
     public void setId(Long id) {
