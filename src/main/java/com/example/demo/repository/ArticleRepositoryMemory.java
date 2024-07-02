@@ -7,12 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class ArticleRepositoryMemory implements ArticleRepository {
+public class ArticleRepositoryMemory {
 
     private static final Map<Long, Article> articles = new HashMap<>();
     private static final AtomicLong autoincrement = new AtomicLong(1);
 
-    @Override
     public List<Article> findAll() {
         return articles.entrySet().stream()
             .map(it -> {
@@ -22,7 +21,6 @@ public class ArticleRepositoryMemory implements ArticleRepository {
             }).toList();
     }
 
-    @Override
     public List<Article> findAllByBoardId(Long boardId) {
         return articles.entrySet().stream()
             .filter(it -> it.getValue().getBoardId().equals(boardId))
@@ -33,7 +31,6 @@ public class ArticleRepositoryMemory implements ArticleRepository {
             }).toList();
     }
 
-    @Override
     public List<Article> findAllByMemberId(Long memberId) {
         return articles.entrySet().stream()
             .filter(it -> it.getValue().getAuthorId().equals(memberId))
@@ -44,12 +41,10 @@ public class ArticleRepositoryMemory implements ArticleRepository {
             }).toList();
     }
 
-    @Override
     public Article findById(Long id) {
         return articles.getOrDefault(id, null);
     }
 
-    @Override
     public Article insert(Article article) {
         long id = autoincrement.getAndIncrement();
         articles.put(id, article);
@@ -57,14 +52,13 @@ public class ArticleRepositoryMemory implements ArticleRepository {
         return article;
     }
 
-    @Override
     public Article update(Article article) {
         articles.put(article.getId(), article);
         return article;
     }
 
-    @Override
     public void deleteById(Long id) {
         articles.remove(id);
     }
+
 }

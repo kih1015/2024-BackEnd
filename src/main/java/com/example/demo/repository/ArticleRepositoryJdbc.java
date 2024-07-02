@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.util.List;
 
-public class ArticleRepositoryJdbc implements ArticleRepository {
+public class ArticleRepositoryJdbc {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -28,7 +28,6 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
         rs.getTimestamp("modified_date").toLocalDateTime()
     );
 
-    @Override
     public List<Article> findAll() {
         return jdbcTemplate.query("""
             SELECT id,  board_id,  author_id,  title,  content,  created_date,  modified_date
@@ -36,7 +35,6 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
             """, articleRowMapper);
     }
 
-    @Override
     public List<Article> findAllByBoardId(Long boardId) {
         return jdbcTemplate.query("""
             SELECT id,  board_id,  author_id,  title,  content,  created_date,  modified_date
@@ -45,7 +43,6 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
             """, articleRowMapper, boardId);
     }
 
-    @Override
     public List<Article> findAllByMemberId(Long memberId) {
         return jdbcTemplate.query("""
             SELECT id,  board_id,  author_id,  title,  content,  created_date,  modified_date
@@ -54,7 +51,6 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
             """, articleRowMapper, memberId);
     }
 
-    @Override
     public Article findById(Long id) {
         return jdbcTemplate.queryForObject("""
             SELECT id,  board_id,  author_id,  title,  content,  created_date,  modified_date
@@ -63,7 +59,6 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
             """, articleRowMapper, id);
     }
 
-    @Override
     public Article insert(Article article) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
@@ -81,7 +76,6 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
         return findById(keyHolder.getKey().longValue());
     }
 
-    @Override
     public Article update(Article article) {
         jdbcTemplate.update("""
                 UPDATE article
@@ -96,11 +90,11 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
         return findById(article.getId());
     }
 
-    @Override
     public void deleteById(Long id) {
         jdbcTemplate.update("""
             DELETE FROM article
             WHERE id = ?
             """, id);
     }
+
 }

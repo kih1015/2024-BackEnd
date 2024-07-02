@@ -9,17 +9,15 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class ArticleRepositoryEntityManager implements ArticleRepository{
+public class ArticleRepositoryEntityManager {
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Override
     public List<Article> findAll() {
         return entityManager.createQuery("SELECT a FROM Article a", Article.class).getResultList();
     }
 
-    @Override
     public List<Article> findAllByBoardId(Long boardId) {
         String jpql = "SELECT a FROM Article a WHERE a.boardId = :boardId";
         TypedQuery<Article> query = entityManager.createQuery(jpql, Article.class);
@@ -27,7 +25,6 @@ public class ArticleRepositoryEntityManager implements ArticleRepository{
         return query.getResultList();
     }
 
-    @Override
     public List<Article> findAllByMemberId(Long memberId) {
         String jpql = "SELECT a FROM Article a WHERE a.authorId = :authorId";
         TypedQuery<Article> query = entityManager.createQuery(jpql, Article.class);
@@ -35,24 +32,21 @@ public class ArticleRepositoryEntityManager implements ArticleRepository{
         return query.getResultList();
     }
 
-    @Override
     public Article findById(Long id) {
         return entityManager.find(Article.class, id);
     }
 
-    @Override
     public Article insert(Article article) {
         entityManager.persist(article);
         return findById(article.getId());
     }
 
-    @Override
     public Article update(Article article) {
         return entityManager.merge(article);
     }
 
-    @Override
     public void deleteById(Long id) {
         entityManager.remove(findById(id));
     }
+
 }
