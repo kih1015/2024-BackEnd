@@ -2,6 +2,8 @@ package com.example.demo.domain;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "member")
 public class Member {
@@ -15,6 +17,8 @@ public class Member {
     private String email;
     @Column(name = "password")
     private String password;
+    @OneToMany(mappedBy = "author")
+    private List<Article> articles;
 
     public Member(Long id, String name, String email, String password) {
         this.id = id;
