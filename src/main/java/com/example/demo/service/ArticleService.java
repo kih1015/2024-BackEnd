@@ -40,8 +40,8 @@ public class ArticleService {
 
     public ArticleResponse getById(Long id) {
         Article article = articleRepository.findById(id);
-        Member member = memberRepository.findById(article.getAuthorId());
-        Board board = boardRepository.findById(article.getBoardId());
+        Member member = memberRepository.findById(article.getAuthor().getId());
+        Board board = boardRepository.findById(article.getBoard().getId());
         return ArticleResponse.of(article, member, board);
     }
 
@@ -49,8 +49,8 @@ public class ArticleService {
         List<Article> articles = articleRepository.findAllByBoardId(boardId);
         return articles.stream()
             .map(article -> {
-                Member member = memberRepository.findById(article.getAuthorId());
-                Board board = boardRepository.findById(article.getBoardId());
+                Member member = memberRepository.findById(article.getAuthor().getId());
+                Board board = boardRepository.findById(article.getBoard().getId());
                 return ArticleResponse.of(article, member, board);
             })
             .toList();
@@ -59,23 +59,23 @@ public class ArticleService {
     @Transactional
     public ArticleResponse create(ArticleCreateRequest request) {
         Article article = new Article(
-            request.authorId(),
-            request.boardId(),
+            memberRepository.findById(request.authorId()),
+            boardRepository.findById(request.boardId()),
             request.title(),
             request.description()
         );
         Article saved = articleRepository.save(article);
-        Member member = memberRepository.findById(saved.getAuthorId());
-        Board board = boardRepository.findById(saved.getBoardId());
+        Member member = memberRepository.findById(saved.getAuthor().getId());
+        Board board = boardRepository.findById(saved.getBoard().getId());
         return ArticleResponse.of(saved, member, board);
     }
 
     @Transactional
     public ArticleResponse update(Long id, ArticleUpdateRequest request) {
         Article article = articleRepository.findById(id);
-        article.update(request.boardId(), request.title(), request.description());
-        Member member = memberRepository.findById(article.getAuthorId());
-        Board board = boardRepository.findById(article.getBoardId());
+        article.update(boardRepository.findById(request.boardId()), request.title(), request.description());
+        Member member = memberRepository.findById(article.getAuthor().getId());
+        Board board = boardRepository.findById(article.getBoard().getId());
         return ArticleResponse.of(article, member, board);
     }
 
@@ -83,4 +83,5 @@ public class ArticleService {
     public void delete(Long id) {
         articleRepository.deleteById(id);
     }
+
 }
