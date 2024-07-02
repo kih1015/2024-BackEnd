@@ -34,7 +34,7 @@ public class MemberService {
 
     @Transactional
     public MemberResponse create(MemberCreateRequest request) {
-        Member member = memberRepository.insert(
+        Member member = memberRepository.save(
             new Member(request.name(), request.email(), request.password())
         );
         return MemberResponse.from(member);
@@ -47,10 +47,9 @@ public class MemberService {
 
     @Transactional
     public MemberResponse update(Long id, MemberUpdateRequest request) {
-        Member old = memberRepository.findById(id);
-        Member member = new Member(old.getId(), old.getName(), old.getEmail(), old.getPassword());
+        Member member = memberRepository.findById(id);
         member.update(request.name(), request.email());
-        memberRepository.update(member);
         return MemberResponse.from(member);
     }
+
 }
