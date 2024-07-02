@@ -2,6 +2,7 @@ package com.example.demo.domain;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,7 @@ public class Member {
     @Column(name = "password")
     private String password;
     @OneToMany(mappedBy = "author")
-    private List<Article> articles;
+    private List<Article> articles = new ArrayList<>();
 
     public Member(Long id, String name, String email, String password) {
         this.id = id;
@@ -61,4 +62,9 @@ public class Member {
     public String getPassword() {
         return password;
     }
+
+    public List<Article> getArticles() {
+        return articles;
+    }
+
 }

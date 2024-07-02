@@ -2,6 +2,7 @@ package com.example.demo.domain;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,8 +14,8 @@ public class Board {
     private Long id;
     @Column(name = "name")
     private String name;
-    @OneToMany(mappedBy = "board")
-    private List<Article> articles;
+    @OneToMany(mappedBy = "board", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Article> articles = new ArrayList<>();
 
     public Board(Long id, String name) {
         this.id = id;
@@ -39,6 +40,10 @@ public class Board {
 
     public String getName() {
         return name;
+    }
+
+    public List<Article> getArticles() {
+        return articles;
     }
 
     public void update(String name) {
