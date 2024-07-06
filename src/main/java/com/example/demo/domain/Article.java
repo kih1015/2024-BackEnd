@@ -11,18 +11,24 @@ public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Member author;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
+
     @Column(name = "title")
     private String title;
+
     @Column(name = "content")
     private String content;
+
     @Column(name = "created_date")
     private LocalDateTime createdAt;
+
     @Column(name = "modified_date")
     private LocalDateTime modifiedAt;
 
@@ -74,16 +80,12 @@ public class Article {
         board.getArticles().add(this);
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setModifiedAt(LocalDateTime modifiedAt) {
-        this.modifiedAt = modifiedAt;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Member getAuthor() {
@@ -108,6 +110,10 @@ public class Article {
 
     public LocalDateTime getModifiedAt() {
         return modifiedAt;
+    }
+
+    public void setModifiedAt(LocalDateTime modifiedAt) {
+        this.modifiedAt = modifiedAt;
     }
 
 }

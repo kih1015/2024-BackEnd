@@ -12,12 +12,16 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "email")
     private String email;
+
     @Column(name = "password")
     private String password;
+
     @OneToMany(mappedBy = "author")
     private List<Article> articles = new ArrayList<>();
 
