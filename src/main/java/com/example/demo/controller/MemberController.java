@@ -51,7 +51,7 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login() {
-        return ResponseEntity.ok().body("token");
+        return ResponseEntity.ok().body(memberService.login("",""));
     }
 
     @PutMapping("/{id}")
