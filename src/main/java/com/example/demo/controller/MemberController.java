@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.controller.dto.request.MemberCreateRequest;
+import com.example.demo.controller.dto.request.MemberLoginRequest;
 import com.example.demo.controller.dto.request.MemberUpdateRequest;
 import com.example.demo.controller.dto.response.MemberResponse;
 import com.example.demo.exception.RestApiException;
@@ -45,13 +46,16 @@ public class MemberController {
         if (request.name() == null || request.email() == null || request.password() == null) {
             throw new RestApiException(CommonErrorCode.NULL_PARAMETER);
         }
+        if (memberService.getAll().stream().anyMatch((res -> res.email().equals(request.email())))) {
+            throw new RestApiException(MemberErrorCode.EMAIL_CONFLICT);
+        }
         MemberResponse response = memberService.create(request);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login() {
-        return ResponseEntity.ok().body(memberService.login("",""));
+    public ResponseEntity<String> login(@RequestBody MemberLoginRequest request) {
+        return ResponseEntity.ok().body(memberService.login(request));
     }
 
     @PutMapping("/{id}")
