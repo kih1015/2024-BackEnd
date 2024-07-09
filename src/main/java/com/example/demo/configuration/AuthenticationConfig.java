@@ -34,7 +34,9 @@ public class AuthenticationConfig {
                         .requestMatchers("/members/join").permitAll()
                         .requestMatchers("/members/login").permitAll()
                         .requestMatchers(HttpMethod.POST).authenticated()
-                        .anyRequest().authenticated())
+                        .requestMatchers(HttpMethod.GET).permitAll()
+                        .anyRequest().authenticated()
+                )
                 .addFilterBefore(new JwtFilter(memberService, secretKey), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
