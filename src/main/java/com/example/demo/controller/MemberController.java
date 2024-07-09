@@ -40,13 +40,18 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping()
+    @PostMapping("/join")
     public ResponseEntity<MemberResponse> create(@RequestBody MemberCreateRequest request) {
         if (request.name() == null || request.email() == null || request.password() == null) {
             throw new RestApiException(CommonErrorCode.NULL_PARAMETER);
         }
         MemberResponse response = memberService.create(request);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login() {
+        return ResponseEntity.ok().body("token");
     }
 
     @PutMapping("/{id}")
